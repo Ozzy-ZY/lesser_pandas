@@ -6,7 +6,8 @@ int main() {
 
     //cout << df << endl;
     df.head();
-    //cout << df["trip_duration"] << endl;
+    cout << df["trip_duration"].dtype << endl;
+    cout << df["trip_duration"].mean() << endl;
 
     return 0;
 }

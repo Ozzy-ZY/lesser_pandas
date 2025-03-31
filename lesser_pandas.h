@@ -27,34 +27,57 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <algorithm>
 #include <string>
+#include <stdexcept>
 #include <map>
 using namespace std;
 
-template <typename T = string>
 class Column {
 public:
     string name; // column's name
-    vector<T> data; // column's data
+    vector<string> data; // column's data
     string dtype = "string"; // data type
-    friend std::ostream& operator<<(std::ostream& os, const Column<>& col);
+    friend std::ostream& operator<<(std::ostream& os, const Column& col);
 
     void print() const {
         cout << name << endl;
-        for(const char& c : name) {
+        for(size_t i = 0; i < name.length(); i++) {
             cout << '-';
         }
         cout << endl;
-        for(const T& element : data) {
-            cout << element << endl;
+        for(const string &str : data) {
+            cout << str << endl;
         }
     }
+
+    double mean() const {
+        if (dtype == "int" || dtype == "double") {
+            double sum = 0;
+            double col_size = static_cast<double> (data.size());
+            for(const string& element : data) {
+                double num = stod(element);
+                sum += num;
+            }
+            return sum / col_size;
+        }
+
+        throw invalid_argument("Invalid type: Column::mean() expects `dtype` to be int or double");
+    };
 };
+
+bool is_integer(const string& s) {
+    try {
+        size_t pos;
+        stoi(s, &pos);
+        return pos == s.length();
+    } catch (...) {
+        return false;
+    }
+}
 
 class DataFrame {
 private:
-    map<string, Column<>> col_data;
+    map<string, Column> col_data;
     vector<vector<string>> row_data;
     string file_dir;
 public:
@@ -64,7 +87,7 @@ public:
         ifstream file(file_dir);
         string line;
 
-        vector<Column<>> temp_data;
+        vector<Column> temp_data;
 
         int idx = 0;
         while(getline(file, line)) {
@@ -74,7 +97,6 @@ public:
             vector<string> tmp_row;
 
             if (idx == 0) {
-                // to process the columns names
                 idx = 1;
                 while(getline(ss, element, delim)) {
                     Column col;
@@ -88,28 +110,19 @@ public:
                 continue;
             }
 
-            int jdx = 0;
+            size_t jdx = 0;
             while(getline(ss, element, delim)) {
-                int is_int = all_of(element.begin(), element.end(), ::isdigit);
-
-                if(is_int) {
-                    temp_data[jdx].dtype = "int";
-                }
-
                 temp_data[jdx].data.push_back(element);
                 tmp_row.push_back(element);
+                if (is_integer(element)) {
+                    temp_data[jdx].dtype = "int";
+                }
                 jdx++;
             }
             row_data.push_back(tmp_row);
         }
 
         for(Column col : temp_data) {
-            //if (col.dtype == "int") {
-            //    Column<int> new_col;
-            //    new_col.dtype = "int";
-            //    continue;
-            //}
-
             col_data[col.name] = col;
         }
     }
@@ -119,10 +132,9 @@ public:
             rows_cnt = row_data.size();
         }
 
-        int idx = 0;
-        int cols_names_printed = 0;
+        size_t idx = 0;
         for(auto& row : row_data) {
-            if (is_tail && idx < (row_data.size()-rows_cnt)) {
+            if (is_tail && idx < static_cast<size_t>(row_data.size()-rows_cnt)) {
                 if (idx == 0) {
                     for(auto& element : row) {
                         cout << element << "\t";
@@ -137,7 +149,7 @@ public:
             }
             cout << endl;
             idx++;
-            if (idx == rows_cnt + 1 && !is_tail) {
+            if (idx == static_cast<size_t>(rows_cnt + 1) && !is_tail) {
                 break;
             }
 
@@ -157,7 +169,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const DataFrame& df);
 
-    Column<>& operator[](const string& key) {
+    Column& operator[](const string& key) {
         auto it = col_data.find(key);
         if (it != col_data.end()) {
             return it->second;
@@ -171,7 +183,7 @@ ostream& operator<<(std::ostream& os, const DataFrame& df) {
     return os;
 }
 
-ostream& operator<<(std::ostream& os, const Column<>& col) {
+ostream& operator<<(std::ostream& os, const Column& col) {
     col.print();
     return os;
 }

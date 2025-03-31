@@ -1,1 +1,1 @@
-g++ main.cpp && ./a.out
+g++ main.cpp -Wall -Werror && ./a.out
