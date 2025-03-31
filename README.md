@@ -15,8 +15,8 @@ int main() {
     cout << df << endl;
     cout << df["col_name"] << endl;
     df.head();
-    cout << endl;
     df.tail();
+    cout << df["col_name"].mean() << endl;
 
     return 0;
 }
