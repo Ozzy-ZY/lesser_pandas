@@ -13,6 +13,7 @@ class Column {
 public:
     string name; // column's name
     vector<string> data; // column's data
+    string dtype; // data type
     friend std::ostream& operator<<(std::ostream& os, const Column& col);
 
     void print() const {
