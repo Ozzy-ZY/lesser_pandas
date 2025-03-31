@@ -6,6 +6,8 @@
 ### Examples:
 
 ```cpp
+#include "lesser_pandas.h"
+
 int main() {
     string file_dir = "data.csv";
     DataFrame df(file_dir);
