@@ -125,13 +125,9 @@ public:
                 temp_data[jdx].data.push_back(element);
                 temp_row.push_back(element);
 
-                if (is_float(element)) {
-                    temp_data[jdx].dtype = "float";
-                }
+                if (is_float(element)) { temp_data[jdx].dtype = "float"; }
 
-                if (is_integer(element)) {
-                    temp_data[jdx].dtype = "int";
-                }
+                if (is_integer(element)) { temp_data[jdx].dtype = "int"; }
 
                 jdx++;
             }

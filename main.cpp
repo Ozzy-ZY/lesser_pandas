@@ -6,8 +6,8 @@ int main() {
 
     cout << df << endl;
     df.head();
-    cout << df["pickup_latitude"].dtype << endl;
-    cout << df["pickup_latitude"].mean() << endl;
+    cout << df["id"].dtype << endl;
+    cout << df["id"].mean() << endl;
 
     return 0;
 }
