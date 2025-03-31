@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Ahmed Hossam
+ * Copyright (c) 2025 Ahmed Hossam <https://github.com/ahmedhosssam>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
