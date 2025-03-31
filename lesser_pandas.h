@@ -84,7 +84,7 @@ public:
             if (is_tail && idx < (row_data.size()-rows_cnt)) {
                 if (idx == 0) {
                     for(auto& element : row) {
-                        cout << element << " ";
+                        cout << element << "\t";
                     }
                     cout << endl;
                 }
@@ -92,7 +92,7 @@ public:
                 continue;
             }
             for(auto& element : row) {
-                cout << element << " ";
+                cout << element << "\t";
             }
             cout << endl;
             idx++;
