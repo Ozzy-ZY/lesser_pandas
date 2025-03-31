@@ -4,10 +4,10 @@ int main() {
     string file_dir = "test.csv";
     DataFrame df(file_dir);
 
-    //cout << df << endl;
+    cout << df << endl;
     df.head();
-    cout << df["trip_duration"].dtype << endl;
-    cout << df["trip_duration"].mean() << endl;
+    cout << df["pickup_latitude"].dtype << endl;
+    cout << df["pickup_latitude"].mean() << endl;
 
     return 0;
 }

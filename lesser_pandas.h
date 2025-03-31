@@ -51,7 +51,7 @@ public:
     }
 
     double mean() const {
-        if (dtype == "int" || dtype == "double") {
+        if (dtype == "int" || dtype == "float") {
             double sum = 0;
             double col_size = static_cast<double> (data.size());
             for(const string& element : data) {
@@ -61,7 +61,7 @@ public:
             return sum / col_size;
         }
 
-        throw invalid_argument("Invalid type: Column::mean() expects `dtype` to be int or double");
+        throw invalid_argument("Invalid type: Column::mean() expects `dtype` to be int or float");
     };
 };
 
@@ -69,6 +69,16 @@ bool is_integer(const string& s) {
     try {
         size_t pos;
         stoi(s, &pos);
+        return pos == s.length();
+    } catch (...) {
+        return false;
+    }
+}
+
+bool is_float(const string& s) {
+    try {
+        size_t pos;
+        stod(s, &pos);
         return pos == s.length();
     } catch (...) {
         return false;
@@ -94,7 +104,7 @@ public:
             char delim = ',';
             stringstream ss(line);
             string element;
-            vector<string> tmp_row;
+            vector<string> temp_row;
 
             if (idx == 0) {
                 idx = 1;
@@ -104,22 +114,28 @@ public:
                     columns.push_back(element);
 
                     temp_data.push_back(col);
-                    tmp_row.push_back(element);
+                    temp_row.push_back(element);
                 }
-                row_data.push_back(tmp_row);
+                row_data.push_back(temp_row);
                 continue;
             }
 
             size_t jdx = 0;
             while(getline(ss, element, delim)) {
                 temp_data[jdx].data.push_back(element);
-                tmp_row.push_back(element);
+                temp_row.push_back(element);
+
+                if (is_float(element)) {
+                    temp_data[jdx].dtype = "float";
+                }
+
                 if (is_integer(element)) {
                     temp_data[jdx].dtype = "int";
                 }
+
                 jdx++;
             }
-            row_data.push_back(tmp_row);
+            row_data.push_back(temp_row);
         }
 
         for(Column col : temp_data) {
