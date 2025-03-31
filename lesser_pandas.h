@@ -33,6 +33,7 @@ private:
     vector<vector<string>> row_data;
     string file_dir;
 public:
+    vector<string> columns;
     DataFrame(string new_file_dir) {
         file_dir = new_file_dir;
         ifstream file(file_dir);
@@ -52,6 +53,8 @@ public:
                 while(getline(ss, element, delim)) {
                     Column col;
                     col.name = element;
+                    columns.push_back(element);
+
                     temp_data.push_back(col);
                     tmp_row.push_back(element);
                 }
