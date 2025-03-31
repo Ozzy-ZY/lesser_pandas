@@ -5,8 +5,8 @@ int main() {
     DataFrame df(file_dir);
 
     //cout << df << endl;
-    //cout << df["pickup_datetime"] << endl;
     df.head();
+    //cout << df["trip_duration"] << endl;
 
     return 0;
 }

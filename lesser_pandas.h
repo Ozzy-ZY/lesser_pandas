@@ -27,16 +27,18 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 #include <string>
 #include <map>
 using namespace std;
 
+template <typename T = string>
 class Column {
 public:
     string name; // column's name
-    vector<string> data; // column's data
-    string dtype; // data type
-    friend std::ostream& operator<<(std::ostream& os, const Column& col);
+    vector<T> data; // column's data
+    string dtype = "string"; // data type
+    friend std::ostream& operator<<(std::ostream& os, const Column<>& col);
 
     void print() const {
         cout << name << endl;
@@ -44,15 +46,15 @@ public:
             cout << '-';
         }
         cout << endl;
-        for(const string &str : data) {
-            cout << str << endl;
+        for(const T& element : data) {
+            cout << element << endl;
         }
     }
 };
 
 class DataFrame {
 private:
-    map<string, Column> col_data;
+    map<string, Column<>> col_data;
     vector<vector<string>> row_data;
     string file_dir;
 public:
@@ -62,7 +64,7 @@ public:
         ifstream file(file_dir);
         string line;
 
-        vector<Column> temp_data;
+        vector<Column<>> temp_data;
 
         int idx = 0;
         while(getline(file, line)) {
@@ -72,6 +74,7 @@ public:
             vector<string> tmp_row;
 
             if (idx == 0) {
+                // to process the columns names
                 idx = 1;
                 while(getline(ss, element, delim)) {
                     Column col;
@@ -87,6 +90,12 @@ public:
 
             int jdx = 0;
             while(getline(ss, element, delim)) {
+                int is_int = all_of(element.begin(), element.end(), ::isdigit);
+
+                if(is_int) {
+                    temp_data[jdx].dtype = "int";
+                }
+
                 temp_data[jdx].data.push_back(element);
                 tmp_row.push_back(element);
                 jdx++;
@@ -95,6 +104,12 @@ public:
         }
 
         for(Column col : temp_data) {
+            //if (col.dtype == "int") {
+            //    Column<int> new_col;
+            //    new_col.dtype = "int";
+            //    continue;
+            //}
+
             col_data[col.name] = col;
         }
     }
@@ -142,7 +157,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const DataFrame& df);
 
-    Column& operator[](const string& key) {
+    Column<>& operator[](const string& key) {
         auto it = col_data.find(key);
         if (it != col_data.end()) {
             return it->second;
@@ -156,7 +171,7 @@ ostream& operator<<(std::ostream& os, const DataFrame& df) {
     return os;
 }
 
-ostream& operator<<(std::ostream& os, const Column& col) {
+ostream& operator<<(std::ostream& os, const Column<>& col) {
     col.print();
     return os;
 }
