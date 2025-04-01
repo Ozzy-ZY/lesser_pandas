@@ -64,57 +64,57 @@ public:
         throw invalid_argument("Invalid type: Column::mean() expects `dtype` to be int or float");
     }
     
-vector<string> sorted() const {
-    vector<string> result = data;
+    vector<string> sorted() const {
+        vector<string> result = data;
 
-    if (result.size() <= 1) {
-        return result;
-    }
-    
-    auto compare = [this](const string& a, const string& b) -> bool {
-        if (dtype == "int" || dtype == "float") {
-            return stod(a) < stod(b);
+        if (result.size() <= 1) {
+            return result;
         }
-        throw invalid_argument("Invalid type: Column::Sorted() expects `dtype` to be int or float");
+        
+        auto compare = [this](const string& a, const string& b) -> bool {
+            if (dtype == "int" || dtype == "float") {
+                return stod(a) < stod(b);
+            }
+            throw invalid_argument("Invalid type: Column::Sorted() expects `dtype` to be int or float");
 
-    };
-    
-    vector<string> temp(result.size());
-    
-    for (size_t width = 1; width < result.size(); width *= 2) {
-        for (size_t i = 0; i < result.size(); i += 2 * width) {
-            size_t left = i;
-            size_t mid = min(i + width, result.size());
-            size_t right = min(i + 2 * width, result.size());
-            
-            size_t l = left;
-            size_t r = mid;
-            size_t k = left;
-            
-            while (l < mid && r < right) {
-                if (compare(result[l], result[r])) {
+        };
+        
+        vector<string> temp(result.size());
+        
+        for (size_t width = 1; width < result.size(); width *= 2) {
+            for (size_t i = 0; i < result.size(); i += 2 * width) {
+                size_t left = i;
+                size_t mid = min(i + width, result.size());
+                size_t right = min(i + 2 * width, result.size());
+                
+                size_t l = left;
+                size_t r = mid;
+                size_t k = left;
+                
+                while (l < mid && r < right) {
+                    if (compare(result[l], result[r])) {
+                        temp[k++] = result[l++];
+                    } else {
+                        temp[k++] = result[r++];
+                    }
+                }
+        
+                while (l < mid) {
                     temp[k++] = result[l++];
-                } else {
+                }
+                
+                while (r < right) {
                     temp[k++] = result[r++];
                 }
-            }
-    
-            while (l < mid) {
-                temp[k++] = result[l++];
-            }
-            
-            while (r < right) {
-                temp[k++] = result[r++];
-            }
-            
-            for (size_t j = left; j < right; j++) {
-                result[j] = temp[j];
+                
+                for (size_t j = left; j < right; j++) {
+                    result[j] = temp[j];
+                }
             }
         }
+        
+        return result;
     }
-    
-    return result;
-}
 };
 
 bool is_integer(const string& s) {
