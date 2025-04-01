@@ -140,7 +140,7 @@ bool is_float(const string& s) {
 class DataFrame {
 private:
     map<string, Column> col_data;
-    vector<vector<string>> row_data;
+    vector<vector<string>> row_data; // used for printing
     string file_dir;
 public:
     vector<string> columns;
@@ -246,6 +246,29 @@ public:
     void tail(int rows_cnt = 5) const {
         print(rows_cnt, 1);
     };
+
+    void rename(vector<pair<string, string>> vec) {
+        for(pair<string, string> col_pair : vec) {
+            string old_col_name = col_pair.first;
+            string new_col_name = col_pair.second;
+
+            auto it = col_data.find(old_col_name);
+            if (it != col_data.end()) {
+                col_data[new_col_name] = it->second;
+                col_data[new_col_name].name = new_col_name;
+                col_data.erase(old_col_name);
+                for(size_t idx = 0; idx < row_data[0].size(); idx++) {
+                    if (row_data[0][idx] == old_col_name) {
+                        row_data[0][idx] = new_col_name;
+                        break;
+                    }
+                }
+                continue;
+            }
+
+            throw std::out_of_range("Column not found!");
+        }
+    }
 
     friend std::ostream& operator<<(std::ostream& os, const DataFrame& df);
 
