@@ -185,7 +185,28 @@ public:
             }
             row_data.push_back(temp_row);
         }
-
+        for (auto& col : temp_data) {
+            bool all_int = true;
+            bool all_float = true;
+            for (const string& element : col.data) {
+                if (!is_integer(element)) {
+                    all_int = false;
+                }
+                if (!is_float(element)) {
+                    all_float = false;
+                }
+                if (!all_int && !all_float) {
+                    break;
+                }
+            }
+            if (all_int) {
+                col.dtype = "int";
+            } else if (all_float) {
+                col.dtype = "float";
+            } else {
+                col.dtype = "string";
+            }
+        }
         for(Column col : temp_data) {
             col_data[col.name] = col;
         }
