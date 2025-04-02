@@ -32,6 +32,7 @@
 #include <map>
 #include <iomanip>
 #include <algorithm>
+#include <type_traits>
 using namespace std;
 
 class Column {
@@ -184,6 +185,11 @@ public:
                 temp_row.push_back(element);
                 jdx++;
             }
+            if (temp_row.size() < row_data[0].size()) {
+                // there is a missing element in that row (in the last column)
+                temp_row.push_back("");
+                temp_data[jdx-1].data.push_back("");
+            }
             row_data.push_back(temp_row);
         }
         for (auto& col : temp_data) {
@@ -264,6 +270,7 @@ public:
                 break;
             }
         }
+        cout << "\nPrinted: " << print_row_data.size() << " rows\n";
     }
 
     void head(int rows_cnt = 5) const {
@@ -294,6 +301,22 @@ public:
             }
 
             throw std::out_of_range("Column not found!");
+        }
+    }
+
+    template <typename T>
+    void fillna(T x) {
+        for(size_t i = 0; i < row_data.size(); i++) {
+            for(size_t j = 0; j < row_data[0].size(); j++) {
+                if (row_data[i][j].length() == 0) {
+                    if (is_same<T, int>::value) {
+                        col_data[row_data[0][j]].data[i] = to_string(x);
+                        row_data[i][j] = to_string(x);
+                    } else {
+                        row_data[i][j] = x;
+                    }
+                }
+            }
         }
     }
 
