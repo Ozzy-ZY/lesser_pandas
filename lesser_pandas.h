@@ -91,8 +91,8 @@ public:
         for (size_t width = 1; width < result.size(); width *= 2) {
             for (size_t i = 0; i < result.size(); i += 2 * width) {
                 size_t left = i;
-                size_t mid = min(i + width, result.size());
-                size_t right = min(i + 2 * width, result.size());
+                size_t mid = std::min(i + width, result.size());
+                size_t right = std::min(i + 2 * width, result.size());
                 
                 size_t l = left;
                 size_t r = mid;
@@ -121,6 +121,34 @@ public:
         }
         
         return result;
+    }
+
+    double min() {
+        if (dtype == "string") {
+            throw invalid_argument("Invalid type: Column::min() expects `dtype` to be int or float");
+        }
+        vector<string> sorted_col = sorted();
+        double mn = 1e9;
+
+        for(string element : sorted_col) {
+            mn = std::min(mn, stod(element));
+        }
+
+        return mn;
+    }
+
+    double max() {
+        if (dtype == "string") {
+            throw invalid_argument("Invalid type: Column::max() expects `dtype` to be int or float");
+        }
+        vector<string> sorted_col = sorted();
+        double mx = -1e9;
+
+        for(string element : sorted_col) {
+            mx = std::max(mx, stod(element));
+        }
+
+        return mx;
     }
 };
 
