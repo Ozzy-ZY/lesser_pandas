@@ -128,11 +128,7 @@ public:
             throw invalid_argument("Invalid type: Column::min() expects `dtype` to be int or float");
         }
         vector<string> sorted_col = sorted();
-        double mn = 1e9;
-
-        for(string element : sorted_col) {
-            mn = std::min(mn, stod(element));
-        }
+        double mn = stod(sorted_col[0]);
 
         return mn;
     }
@@ -142,11 +138,7 @@ public:
             throw invalid_argument("Invalid type: Column::max() expects `dtype` to be int or float");
         }
         vector<string> sorted_col = sorted();
-        double mx = -1e9;
-
-        for(string element : sorted_col) {
-            mx = std::max(mx, stod(element));
-        }
+        double mx = stod(sorted_col[sorted_col.size()-1]);
 
         return mx;
     }
