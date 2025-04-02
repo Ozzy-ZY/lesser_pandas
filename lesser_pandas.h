@@ -30,6 +30,7 @@
 #include <string>
 #include <stdexcept>
 #include <map>
+#include <iomanip>
 using namespace std;
 
 class Column {
@@ -214,10 +215,11 @@ public:
 
         size_t idx = 0;
         for(auto& row : row_data) {
+            cout << std::left;
             if (is_tail && idx < static_cast<size_t>(row_data.size()-rows_cnt)) {
                 if (idx == 0) {
                     for(auto& element : row) {
-                        cout << element << "\t";
+                        cout << setw(20) << element;
                     }
                     cout << endl;
                 }
@@ -225,7 +227,7 @@ public:
                 continue;
             }
             for(auto& element : row) {
-                cout << element << "\t";
+                cout << setw(20) << element;
             }
             cout << endl;
             idx++;
