@@ -26,7 +26,7 @@ int main() {
 ### Contributions are welcomed
 
 - [x] Rename a column
-- [ ] `fillna`: Fill missing values
+- [x] `fillna`: Fill missing values
 - [ ] `dropna(col_name)`: Drop rows where `col_name` is missing
 - [ ] `df.describe()`: Descriptive statistics
 - [ ] `df.corr()`: Correlation matrix
