@@ -31,6 +31,7 @@
 #include <stdexcept>
 #include <map>
 #include <iomanip>
+#include <algorithm>
 using namespace std;
 
 class Column {
@@ -41,6 +42,10 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Column& col);
 
     void print() const {
+        if (data.size() == 0) {
+            return;
+        }
+
         cout << name << endl;
         for(size_t i = 0; i < name.length(); i++) {
             cout << '-';
@@ -208,13 +213,33 @@ public:
         }
     }
 
-    void print(int rows_cnt = 0, int is_tail = 0) const {
+    void print(int rows_cnt = 0, int is_tail = 0, vector<string> cols = {}) const {
         if (rows_cnt == 0) {
             rows_cnt = row_data.size();
         }
 
+        if (cols.size() == 0) {
+            cols = columns;
+        }
+
+        vector<vector<string>> print_row_data;
+
+        for(size_t i = 0; i < row_data.size(); i++) {
+            size_t col_idx = 0;
+            vector<string> new_row;
+            for(string col : cols) {
+                for(size_t j = 0; j < row_data[0].size(); j++) {
+                    if (row_data[0][j] == col) {
+                        new_row.push_back(row_data[i][j]);
+                        col_idx++;
+                    }
+                }
+            }
+            print_row_data.push_back(new_row);
+        }
+
         size_t idx = 0;
-        for(auto& row : row_data) {
+        for(auto& row : print_row_data) {
             cout << std::left;
             if (is_tail && idx < static_cast<size_t>(row_data.size()-rows_cnt)) {
                 if (idx == 0) {
@@ -280,6 +305,13 @@ public:
             return it->second;
         }
         throw std::out_of_range("Column not found!");
+    }
+
+    Column operator[](const vector<string>& keys) {
+        print(0, 0, keys);
+
+        Column dummy;
+        return dummy;
     }
 };
 
