@@ -239,15 +239,31 @@ public:
 
         vector<vector<string>> print_row_data;
         vector<string> col_name_row;
-        for (auto it = col_data.rbegin(); it != col_data.rend(); ++it) {
-            col_name_row.push_back(it->second.name);
+        for(string col : cols) {
+            bool found = false;
+            for (auto it = col_data.rbegin(); it != col_data.rend(); ++it) {
+                if (col == it->second.name) {
+                    col_name_row.push_back(it->second.name);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                throw std::out_of_range("Column not found!");
+            }
         }
         print_row_data.push_back(col_name_row);
 
         for(size_t idx = 0; idx < row_data.size()-1; idx++) {
             vector<string> new_row;
-            for (auto it = col_data.rbegin(); it != col_data.rend(); ++it) {
-                new_row.push_back(it->second.data[idx]);
+            for(string col : cols) {
+                for (auto it = col_data.rbegin(); it != col_data.rend(); ++it) {
+                    if (col == it->second.name) {
+                        new_row.push_back(it->second.data[idx]);
+                        break;
+                    }
+                }
             }
             print_row_data.push_back(new_row);
         }
