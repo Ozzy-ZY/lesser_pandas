@@ -77,7 +77,7 @@ public:
         }
         vector<string> result = data;
 
-        std::sort(result.begin(), result.end(), [](string &s1, string &s2){
+        std::sort(result.begin(), result.end(), [](string &s1, string &s2) {
             return stod(s1) < stod(s2);
         });
         
@@ -290,7 +290,7 @@ public:
         for(size_t i = 0; i < row_data.size(); i++) {
             for(size_t j = 0; j < row_data[0].size(); j++) {
                 if (row_data[i][j].length() == 0) {
-                    if (is_same<T, int>::value) {
+                    if (is_same<T, int>::value || is_same<T, double>::value) {
                         col_data[row_data[0][j]].data[i] = to_string(x);
                         row_data[i][j] = to_string(x);
                     } else {
