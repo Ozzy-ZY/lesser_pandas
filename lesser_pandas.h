@@ -155,6 +155,11 @@ public:
     DataFrame(string new_file_dir) {
         file_dir = new_file_dir;
         ifstream file(file_dir);
+
+        if (!file) {
+            throw runtime_error("Error: File not found!");
+        }
+
         string line;
 
         vector<Column> temp_data;
@@ -314,11 +319,12 @@ public:
             if (it != col_data.end()) {
                 col_data[new_col_name] = it->second;
                 col_data[new_col_name].name = new_col_name;
+                col_data[new_col_name].dtype = col_data[new_col_name].dtype;
                 col_data.erase(old_col_name);
-                for(size_t idx = 0; idx < row_data[0].size(); idx++) {
-                    if (row_data[0][idx] == old_col_name) {
-                        row_data[0][idx] = new_col_name;
-                        break;
+
+                for(string &col : columns) {
+                    if (col == old_col_name) {
+                        col = new_col_name;
                     }
                 }
                 continue;
@@ -346,9 +352,9 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const DataFrame& df);
 
     Column& operator[](const string& key) {
-        auto it = col_data.find(key);
-        if (it != col_data.end()) {
-            return it->second;
+        auto it = find(columns.begin(), columns.end(), key);
+        if (it != columns.end()) {
+            return col_data[*it];
         }
         throw std::out_of_range("Column not found!");
     }
