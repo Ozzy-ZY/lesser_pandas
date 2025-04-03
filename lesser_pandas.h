@@ -55,6 +55,7 @@ public:
         for(const string &str : data) {
             cout << str << endl;
         }
+        cout << "\nPrinted: " << data.size() << " rows\n";
     }
 
     double mean() const {
@@ -62,6 +63,11 @@ public:
             double sum = 0;
             double col_size = static_cast<double> (data.size());
             for(const string& element : data) {
+                if (element.length() == 0) {
+                    // missing element
+                    col_size--;
+                    continue;
+                }
                 double num = stod(element);
                 sum += num;
             }
@@ -102,6 +108,20 @@ public:
         double mx = stod(sorted_col[sorted_col.size()-1]);
 
         return mx;
+    }
+
+    template <typename T>
+    void fillna(T x) {
+        for (string &element : data) {
+            if (element.length() == 0) {
+                // missing element
+                if (is_same<T, int>::value || is_same<T, double>::value) {
+                    element = to_string(x);
+                } else {
+                    element = x;
+                }
+            }
+        }
     }
 };
 
@@ -166,17 +186,24 @@ public:
                 temp_row.push_back(element);
                 jdx++;
             }
+
             if (temp_row.size() < row_data[0].size()) {
                 // there is a missing element in that row (in the last column)
                 temp_row.push_back("");
-                temp_data[jdx-1].data.push_back("");
+                temp_data[jdx].data.push_back("");
             }
+
             row_data.push_back(temp_row);
         }
+
         for (auto& col : temp_data) {
             bool all_int = true;
             bool all_float = true;
             for (const string& element : col.data) {
+                if (element.length() == 0) {
+                    // missing element
+                    continue;
+                }
                 if (!is_integer(element)) {
                     all_int = false;
                 }
@@ -195,6 +222,7 @@ public:
                 col.dtype = "string";
             }
         }
+
         for(Column col : temp_data) {
             col_data[col.name] = col;
         }
@@ -210,17 +238,16 @@ public:
         }
 
         vector<vector<string>> print_row_data;
+        vector<string> col_name_row;
+        for (auto it = col_data.rbegin(); it != col_data.rend(); ++it) {
+            col_name_row.push_back(it->second.name);
+        }
+        print_row_data.push_back(col_name_row);
 
-        for(size_t i = 0; i < row_data.size(); i++) {
-            size_t col_idx = 0;
+        for(size_t idx = 0; idx < row_data.size()-1; idx++) {
             vector<string> new_row;
-            for(string col : cols) {
-                for(size_t j = 0; j < row_data[0].size(); j++) {
-                    if (row_data[0][j] == col) {
-                        new_row.push_back(row_data[i][j]);
-                        col_idx++;
-                    }
-                }
+            for (auto it = col_data.rbegin(); it != col_data.rend(); ++it) {
+                new_row.push_back(it->second.data[idx]);
             }
             print_row_data.push_back(new_row);
         }
@@ -287,14 +314,13 @@ public:
 
     template <typename T>
     void fillna(T x) {
-        for(size_t i = 0; i < row_data.size(); i++) {
-            for(size_t j = 0; j < row_data[0].size(); j++) {
-                if (row_data[i][j].length() == 0) {
+        for (auto it = col_data.begin(); it != col_data.end(); ++it) {
+            for(string &element : it->second.data) {
+                if (element.length() == 0) {
                     if (is_same<T, int>::value || is_same<T, double>::value) {
-                        col_data[row_data[0][j]].data[i] = to_string(x);
-                        row_data[i][j] = to_string(x);
+                        element = to_string(x);
                     } else {
-                        row_data[i][j] = x;
+                        element = x;
                     }
                 }
             }
