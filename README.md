@@ -36,3 +36,4 @@ int main() {
   - If the column contains non-numeric data (e.g., strings), `sum()` will concatenate them.
   - If the column has missing values (NaN), they will be ignored by default unless you specify `skipna=False`.
 - [ ] `df.to_csv('cleaned_data.csv')` save a modified dataframe to a new csv file.
+- [ ] Implement A Test Suit for Lesser Pandas.
