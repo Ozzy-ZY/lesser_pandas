@@ -9,14 +9,39 @@
 #include "lesser_pandas.h"
 
 int main() {
-    string file_dir = "data.csv";
-    DataFrame df(file_dir);
+    DataFrame df("data.csv");
 
+    cout << "Full DataFrame:\n";
     cout << df << endl;
-    cout << df["col_name"] << endl;
-    df.head();
-    df.tail();
-    cout << df["col_name"].mean() << endl;
+
+    cout << "First 3 rows:\n";
+    df.head(3);
+
+    cout << "Last 2 rows:\n";
+    df.tail(2);
+
+    // Access a single column
+    Column& age_col = df["Age"];
+    cout << "Age column:\n" << age_col << endl;
+
+    // Compute mean of Age column (ignoring missing values)
+    cout << "Mean age: " << age_col.mean() << endl;
+
+    age_col.fillna(age_col.mean());
+    cout << "Age column after filling missing values with the average:\n" << age_col << endl;
+
+    df.fillna(5);
+    cout << "DataFrame after filling missing values:\n";
+    cout << df << endl;
+
+    // Rename columns
+    df.rename({{"Age", "Years"}, {"Salary", "Income"}});
+    cout << "DataFrame after renaming columns:\n";
+    cout << df << endl;
+    cout << df["Income"];
+
+    cout << "Min Salary: " << df["Income"].min() << endl;
+    cout << "Max Salary: " << df["Income"].max() << endl;
 
     return 0;
 }
