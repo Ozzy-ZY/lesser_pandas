@@ -244,11 +244,13 @@ public:
 
         vector<vector<string>> print_row_data;
         vector<string> col_name_row;
+        size_t sz = 0;
         for(string col : cols) {
             bool found = false;
             for (auto it = col_data.rbegin(); it != col_data.rend(); ++it) {
                 if (col == it->second.name) {
                     col_name_row.push_back(it->second.name);
+                    sz = it->second.data.size();
                     found = true;
                     break;
                 }
@@ -260,7 +262,7 @@ public:
         }
         print_row_data.push_back(col_name_row);
 
-        for(size_t idx = 0; idx < row_data.size()-1; idx++) {
+        for(size_t idx = 0; idx < sz; idx++) {
             vector<string> new_row;
             for(string col : cols) {
                 for (auto it = col_data.rbegin(); it != col_data.rend(); ++it) {
@@ -346,6 +348,29 @@ public:
                     }
                 }
             }
+        }
+    }
+
+    void dropna(string col) {
+        /**
+         * Removes rows from all columns where the specified column has missing (empty) values.
+        */
+
+        vector<string> &data = col_data[col].data;
+        vector<int> removed_idx;
+
+        for(size_t idx = 0; idx < data.size(); idx++) {
+            if (data[idx].length() == 0) {
+                removed_idx.push_back(idx);
+            }
+        }
+
+        int jdx = 0;
+        for(size_t idx : removed_idx) {
+            for (auto it = col_data.begin(); it != col_data.end(); ++it) {
+                it->second.data.erase(it->second.data.begin() + idx - jdx);
+            }
+            jdx++;
         }
     }
 

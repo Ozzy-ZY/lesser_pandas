@@ -27,7 +27,7 @@ int main() {
 
 - [x] Rename a column
 - [x] `fillna`: Fill missing values
-- [ ] `dropna(col_name)`: Drop rows where `col_name` is missing
+- [x] `dropna(col_name)`: Drop rows where `col_name` is missing
 - [ ] `df.describe()`: Descriptive statistics
 - [ ] `df.corr()`: Correlation matrix
 - [ ] `df[df['Amount'] > 1000]`: Filter rows based on a condition
