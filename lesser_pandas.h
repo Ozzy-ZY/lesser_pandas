@@ -375,96 +375,83 @@ public:
         }
     }
 
-    void save(const string &output_file, bool index = true, const string &sep = ",", bool header = true, const string &na_rep = "", const vector<string> &selected_columns = {}) const
-    {
+    void save(const string & output_file, bool index = true,
+        const string & sep = ",",
+           bool header = true,
+           const string & na_rep = "",
+              const vector < string > & selected_columns = {}) const {
         std::filesystem::path file_path(output_file);
-
+ 
         // Create directories if they don't exist
-        if (!file_path.parent_path().empty())
-        {
-            std::filesystem::create_directories(file_path.parent_path());
+        if (!file_path.parent_path().empty()) {
+           std::filesystem::create_directories(file_path.parent_path());
         }
         ofstream file(output_file);
-
-        if (!file)
-        {
-            throw runtime_error("Error: Unable to open file for writing!");
+ 
+        if (!file) {
+           throw runtime_error("Error: Unable to open file for writing!");
         }
-
+ 
         // Determine which columns to save
-        vector<string> columns_to_save;
-        if (selected_columns.empty())
-        {
-            columns_to_save = columns;
+        vector < string > columns_to_save;
+        if (selected_columns.empty()) {
+           columns_to_save = columns;
+        } else {
+           // Validate selected columns
+           for (const string & col_name: selected_columns) {
+              if (col_data.find(col_name) == col_data.end()) {
+                 throw std::out_of_range("Column not found: " + col_name);
+              }
+              columns_to_save.push_back(col_name);
+           }
         }
-        else
-        {
-            // Validate selected columns
-            for (const string &col_name : selected_columns)
-            {
-                if (col_data.find(col_name) == col_data.end())
-                {
-                    throw std::out_of_range("Column not found: " + col_name);
-                }
-                columns_to_save.push_back(col_name);
-            }
-        }
-
+ 
         // handle header option
-        if (header)
-        {
-            // index option
-            if (index)
-            {
-                file << "index" << sep;
-            }
-            for (size_t i = 0; i < columns_to_save.size(); ++i)
-            {
-                file << columns_to_save[i];
-                if (i < columns_to_save.size() - 1)
-                {
-                    file << sep;
-                }
-            }
-            file << endl;
+        if (header) {
+           // index option
+           if (index) {
+              file << "index" << sep;
+           }
+           for (size_t i = 0; i < columns_to_save.size(); ++i) {
+              file << columns_to_save[i];
+              if (i < columns_to_save.size() - 1) {
+                 file << sep;
+              }
+           }
+           file << endl;
         }
-
+ 
         // Determine the number of rows
         size_t num_rows = 0;
-        if (!columns_to_save.empty())
-        {
-            const string &first_col = columns_to_save[0];
-            num_rows = col_data.at(first_col).data.size();
+        if (!columns_to_save.empty()) {
+           const string & first_col = columns_to_save[0];
+           num_rows = col_data.at(first_col).data.size();
         }
-
+ 
         // Write row data
-        for (size_t idx = 0; idx < num_rows; ++idx)
-        {
-            if (index)
-            {
-                file << idx << sep;
-            }
-
-            for (size_t j = 0; j < columns_to_save.size(); ++j)
-            {
-                const string &col_name = columns_to_save[j];
-                const auto &col = col_data.at(col_name);
-
-                // Replace missing values with `na_rep` string
-                string value = col.data[idx].empty() ? na_rep : col.data[idx];
-                file << value;
-
-                if (j < columns_to_save.size() - 1)
-                {
-                    file << sep;
-                }
-            }
-            file << endl;
+        for (size_t idx = 0; idx < num_rows; ++idx) {
+           if (index) {
+              file << idx << sep;
+           }
+ 
+           for (size_t j = 0; j < columns_to_save.size(); ++j) {
+              const string & col_name = columns_to_save[j];
+              const auto & col = col_data.at(col_name);
+ 
+              // Replace missing values with `na_rep` string
+              string value = col.data[idx].empty() ? na_rep : col.data[idx];
+              file << value;
+ 
+              if (j < columns_to_save.size() - 1) {
+                 file << sep;
+              }
+           }
+           file << endl;
         }
-
+ 
         file.close();
         cout << "Data saved successfully to " << output_file << " with separator '" << sep << "'." << endl;
-    }
+     }
 
     friend std::ostream& operator<<(std::ostream& os, const DataFrame& df);
 
