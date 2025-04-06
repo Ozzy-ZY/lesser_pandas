@@ -375,6 +375,25 @@ public:
         }
     }
 
+    /**
+     * @brief Saves the DataFrame to a file.
+     *
+     * This function allows saving the DataFrame to a specified file with various options:
+     * - Custom separator for columns.
+     * - Option to include or exclude column headers.
+     * - Option to include or exclude row indices.
+     * - Replace missing values with a custom string.
+     * - Save only specific columns if specified.
+     *
+     * @param output_file The path to the output file where the DataFrame will be saved.
+     * @param index Whether to include row indices in the output file (default: true).
+     * @param sep The separator to use between columns (default: ",").
+     * @param header Whether to include column headers in the output file (default: true).
+     * @param na_rep The string to replace missing values (default: "").
+     * @param selected_columns A vector of column names to save. If empty, all columns are saved (default: {}).
+     * @throws std::runtime_error If the file cannot be opened for writing.
+     * @throws std::out_of_range If any of the specified columns in `selected_columns` do not exist.
+     */
     void save_to_csv(
         const string& output_file,
         bool index = true,
