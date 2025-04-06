@@ -375,7 +375,7 @@ public:
         }
     }
 
-    void save(
+    void save_to_csv(
         const string& output_file,
         bool index = true,
         const string& sep = ",",

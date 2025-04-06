@@ -23,7 +23,7 @@ int main() {
     cout << "Age column after filling missing values with the average:\n" << age_col << endl;
     
     // Save the DataFrame to a file named "output.csv"
-    df.save("output.csv", true, "|", true, "N/A", {"Age", "Salary"});
+    df.save_to_csv("output.csv", true, "|", true, "N/A", {"Age", "Salary"});
 
     df.fillna(5);
     cout << "DataFrame after filling missing values:\n";
