@@ -375,11 +375,14 @@ public:
         }
     }
 
-    void save(const string & output_file, bool index = true,
-        const string & sep = ",",
-           bool header = true,
-           const string & na_rep = "",
-              const vector < string > & selected_columns = {}) const {
+    void save(
+        const string& output_file,
+        bool index = true,
+        const string& sep = ",",
+        bool header = true,
+        const string& na_rep = "",
+        const vector <string>& selected_columns = {}
+    ) const {
         std::filesystem::path file_path(output_file);
  
         // Create directories if they don't exist
