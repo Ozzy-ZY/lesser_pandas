@@ -30,6 +30,9 @@ int main() {
     age_col.fillna(age_col.mean());
     cout << "Age column after filling missing values with the average:\n" << age_col << endl;
 
+    // Save the DataFrame to a file named "output.csv"
+    df.save_to_csv("output.csv", true, "|", true, "N/A", {"Age", "Salary"});
+
     df.fillna(5);
     cout << "DataFrame after filling missing values:\n";
     cout << df << endl;
@@ -60,5 +63,5 @@ int main() {
 - [ ] `df["col"].sum()`
   - If the column contains non-numeric data (e.g., strings), `sum()` will concatenate them.
   - If the column has missing values (NaN), they will be ignored by default unless you specify `skipna=False`.
-- [ ] `df.to_csv('cleaned_data.csv')` save a modified dataframe to a new csv file.
+- [x] `df.to_csv('cleaned_data.csv')` save a modified dataframe to a new csv file.
 - [ ] Implement A Test Suit for Lesser Pandas.
