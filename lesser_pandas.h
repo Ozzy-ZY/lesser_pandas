@@ -43,20 +43,42 @@ public:
     string dtype = "string"; // data type
     friend std::ostream& operator<<(std::ostream& os, const Column& col);
 
-    void print() const {
+    void print(int rows_cnt = 0, bool is_tail = false) const {
         if (data.size() == 0) {
             return;
         }
 
+        if (rows_cnt == 0) {
+            rows_cnt = data.size()-1;
+        }
+
         cout << name << endl;
+
         for(size_t i = 0; i < name.length(); i++) {
             cout << '-';
         }
+
         cout << endl;
-        for(const string &str : data) {
-            cout << str << endl;
+
+        if (is_tail) {
+            for(size_t idx = data.size()-rows_cnt; idx < data.size(); idx++) {
+                cout << data[idx] << endl;
+            }
+        } else {
+            for(int idx = 0; idx < rows_cnt; idx++) {
+                cout << data[idx] << endl;
+            }
         }
-        cout << "\nPrinted: " << data.size() << " rows\n";
+
+        cout << "\nPrinted: " << rows_cnt << " rows\n";
+    }
+
+    void head(int rows_cnt = 5) const {
+        print(rows_cnt);
+    }
+
+    void tail(int rows_cnt = 5) const {
+        print(rows_cnt, true);
     }
 
     double mean() const {
