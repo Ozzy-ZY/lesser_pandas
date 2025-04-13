@@ -139,6 +139,9 @@ public:
             if (element.length() == 0) {
                 // missing element
                 if (is_same<T, int>::value || is_same<T, double>::value) {
+                    if (dtype == "int") {
+                        x = static_cast<int>(x);
+                    }
                     element = to_string(x);
                 } else {
                     element = x;
