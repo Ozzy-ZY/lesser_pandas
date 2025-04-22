@@ -652,14 +652,14 @@ public:
             throw std::out_of_range("Mask size does not match data rows!");
         }
 
-        cerr << "Filtering DataFrame with mask of size: " << mask.size() << endl;
+        // cerr << "Filtering DataFrame with mask of size: " << mask.size() << endl;
 
         DataFrame *filtered_df = new DataFrame(*this);
 
         // Preserve the header row
         filtered_df->row_data.push_back(row_data[0]);
 
-        // Filter data rows (skip header)
+        // Filter data rows 
         for (size_t i = 0; i < data_rows; ++i) {
             if (mask[i]) {
                 filtered_df->row_data.push_back(row_data[i + 1]); // Skip header
@@ -680,7 +680,9 @@ public:
             }
             filtered_df->col_data[col_name] = filtered_col;
         }
-        cerr << "Filtered DataFrame with " << filtered_df->row_data.size() - 1 << " rows." << endl;
+
+        // cerr << "Filtered DataFrame with " << filtered_df->row_data.size() - 1 << " rows." << endl;
+
         return *filtered_df;
     }
     Column& operator[](const string& key) {
