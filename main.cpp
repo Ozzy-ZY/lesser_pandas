@@ -39,8 +39,19 @@ int main() {
         // cout << "Min Salary: " << df["Income"].min() << endl;
         // cout << "Max Salary: " << df["Income"].max() << endl;
 
-        auto newData = df[df["PassengerId"] > 600];
+        //cout << df["Age"] << endl; // print Sex column as (',') comma spilt
+        /*
+            so if we print any col before Name col , it works well 
+            but if we print any col after Name col , it will not work well as there are (,) in name
+        */
+
+        auto newData = df[df["Survived"] < 1];
         cout << newData << endl;
+        /*
+            will works noramally as we are using col prev Name 
+        */
+
+        // DataSet name is titanic.csv
 
     } catch (const exception& e) {
         cerr << "Error: " << e.what() << std::endl;
