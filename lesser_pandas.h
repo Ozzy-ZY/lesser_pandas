@@ -149,6 +149,199 @@ public:
             }
         }
     }
+
+    // for filtering by mask array 
+    vector<bool> operator==(const double& key) const {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            try {
+                if (data[i].empty()) {
+                    mask[i] = false; 
+                } else {
+                    mask[i] = (stod(data[i]) == key); 
+                }
+            } catch (...) {
+                mask[i] = false; 
+            }
+        }
+        return mask;
+    } 
+
+    vector<bool> operator!=(const double& key) {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            try {
+                if (data[i].empty()) {
+                    mask[i] = false; 
+                } else {
+                    mask[i] = (stod(data[i]) != key); 
+                }
+            } catch (...) {
+                mask[i] = false; 
+            }
+        }
+        return mask;
+    }
+
+    vector<bool> operator<(const double& key) {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            try {
+                if (data[i].empty()) {
+                    mask[i] = false; 
+                } else {
+                    mask[i] = (stod(data[i]) < key); 
+                }
+            } catch (...) {
+                mask[i] = false; 
+            }
+        }
+        return mask;
+    }
+
+    vector<bool> operator>(const double& key) {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            try {
+                if (data[i].empty()) {
+                    mask[i] = false; 
+                } else {
+                    mask[i] = (stod(data[i]) > key); 
+                }
+            } catch (...) {
+                mask[i] = false; 
+            }
+        }
+        return mask;
+    }
+
+    vector<bool> operator<=(const double& key) {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            try {
+                if (data[i].empty()) {
+                    mask[i] = false; 
+                } else {
+                    mask[i] = (stod(data[i]) <= key); 
+                }
+            } catch (...) {
+                mask[i] = false; 
+            }
+        }
+        return mask;
+    }
+
+    vector<bool> operator>=(const double& key) {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            try {
+                if (data[i].empty()) {
+                    mask[i] = false; 
+                } else {
+                    mask[i] = (stod(data[i]) >= key); 
+                }
+            } catch (...) {
+                mask[i] = false; 
+            }
+        }
+        return mask;
+    }
+
+    vector<bool> operator==(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            mask[i] = (data[i] == key);
+        }
+        return mask;
+    }
+
+    vector<bool> operator!=(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            mask[i] = (data[i] != key);
+        }
+        return mask;
+    }
+
+    vector<bool> operator<(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            mask[i] = (data[i] < key);
+        }
+        return mask;
+    }
+
+    vector<bool> operator>(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            mask[i] = (data[i] > key);
+        }
+        return mask;
+    }
+
+    vector<bool> operator<=(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            mask[i] = (data[i] <= key);
+        }
+        return mask;
+    }
+
+    vector<bool> operator>=(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
+        vector<bool> mask(data.size());
+        for (size_t i = 0; i < data.size(); i++) {
+            mask[i] = (data[i] >= key);
+        }
+        return mask;
+    }
 };
 
 bool is_integer(const string& s) {
@@ -178,6 +371,15 @@ private:
     string file_dir;
 public:
     vector<string> columns;
+
+    DataFrame() = default;
+    
+    DataFrame(const DataFrame& other) 
+    : col_data(other.col_data), 
+      row_data(other.row_data), 
+      file_dir(other.file_dir), 
+      columns(other.columns) {}
+
     DataFrame(string new_file_dir) {
         file_dir = new_file_dir;
         ifstream file(file_dir);
@@ -502,10 +704,46 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const DataFrame& df);
 
+    DataFrame& operator[](const vector<bool> & mask) {
+        size_t data_rows = row_data.size() - 1; // Exclude header
+        if (mask.size() != data_rows) {
+            throw std::out_of_range("Mask size does not match data rows!");
+        }
+
+        DataFrame *filtered_df = new DataFrame(*this);
+
+        // Preserve the header row
+        filtered_df->row_data.push_back(row_data[0]);
+
+        // Filter data rows 
+        for (size_t i = 0; i < data_rows; ++i) {
+            if (mask[i]) {
+                filtered_df->row_data.push_back(row_data[i + 1]); // Skip header
+            }
+        }
+
+        // Rebuild columns from filtered data
+        for (const auto& col_name : columns) {
+            Column filtered_col;
+            filtered_col.name = col_name;
+            filtered_col.dtype = col_data.at(col_name).dtype;
+
+            // Copy data based on mask (original data indices)
+            for (size_t i = 0; i < data_rows; ++i) {
+                if (mask[i]) {
+                    filtered_col.data.push_back(col_data.at(col_name).data[i]);
+                }
+            }
+            filtered_df->col_data[col_name] = filtered_col;
+        }
+
+        return *filtered_df;
+    }
+
     Column& operator[](const string& key) {
-        auto it = find(columns.begin(), columns.end(), key);
-        if (it != columns.end()) {
-            return col_data[*it];
+        auto it = col_data.find(key);
+        if (it != col_data.end()) {
+            return it->second;
         }
         throw std::out_of_range("Column not found!");
     }

@@ -38,5 +38,7 @@ int main() {
     cout << "Min Salary: " << df["Income"].min() << endl;
     cout << "Max Salary: " << df["Income"].max() << endl;
 
-    return 0;
+    // Filtering 
+    auto newData = df[df["Years"] > 30];
+    cout << newData << endl;
 }
