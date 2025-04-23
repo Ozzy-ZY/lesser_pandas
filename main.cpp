@@ -39,6 +39,6 @@ int main() {
     cout << "Max Salary: " << df["Income"].max() << endl;
 
     // Filtering 
-    auto newData = df[df["Years"] > 30];
+    DataFrame newData = df[df["Years"] > 30];
     cout << newData << endl;
 }

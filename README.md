@@ -46,6 +46,10 @@ int main() {
     cout << "Min Salary: " << df["Income"].min() << endl;
     cout << "Max Salary: " << df["Income"].max() << endl;
 
+    // Filtering 
+    DataFrame newData = df[df["Years"] > 30];
+    cout << newData << endl;
+
     return 0;
 }
 ```
@@ -58,7 +62,7 @@ int main() {
 - [x] `dropna(col_name)`: Drop rows where `col_name` is missing
 - [ ] `df.describe()`: Descriptive statistics
 - [ ] `df.corr()`: Correlation matrix
-- [ ] `df[df['Amount'] > 1000]`: Filter rows based on a condition
+- [x] `df[df['Amount'] > 1000]`: Filter rows based on a condition
 - [ ] `df.sum()`: Returns the sum of all rows
 - [ ] `df["col"].sum()`
   - If the column contains non-numeric data (e.g., strings), `sum()` will concatenate them.
