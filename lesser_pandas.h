@@ -151,9 +151,7 @@ public:
     }
 
     // for filtering by mask array 
-    vector<bool> operator==(const int& key) const {
-        // TODO: We need to handle strings also, for example `df["name"] == "Ahmed"`
-
+    vector<bool> operator==(const double& key) const {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
@@ -169,7 +167,7 @@ public:
         return mask;
     } 
 
-    vector<bool> operator!=(const int& key) {
+    vector<bool> operator!=(const double& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
@@ -185,14 +183,14 @@ public:
         return mask;
     }
 
-    vector<bool> operator<(const int& key) {
+    vector<bool> operator<(const double& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
                 if (data[i].empty()) {
                     mask[i] = false; 
                 } else {
-                    mask[i] = (stoi(data[i]) < key); 
+                    mask[i] = (stod(data[i]) < key); 
                 }
             } catch (...) {
                 mask[i] = false; 
@@ -201,7 +199,7 @@ public:
         return mask;
     }
 
-    vector<bool> operator>(const int& key) {
+    vector<bool> operator>(const double& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
@@ -217,7 +215,7 @@ public:
         return mask;
     }
 
-    vector<bool> operator<=(const int& key) {
+    vector<bool> operator<=(const double& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
@@ -233,14 +231,14 @@ public:
         return mask;
     }
 
-    vector<bool> operator>=(const int& key) {
+    vector<bool> operator>=(const double& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
                 if (data[i].empty()) {
                     mask[i] = false; 
                 } else {
-                    mask[i] = (stoi(data[i]) >= key); 
+                    mask[i] = (stod(data[i]) >= key); 
                 }
             } catch (...) {
                 mask[i] = false; 
@@ -664,8 +662,6 @@ public:
             throw std::out_of_range("Mask size does not match data rows!");
         }
 
-        // cerr << "Filtering DataFrame with mask of size: " << mask.size() << endl;
-
         DataFrame *filtered_df = new DataFrame(*this);
 
         // Preserve the header row
@@ -692,8 +688,6 @@ public:
             }
             filtered_df->col_data[col_name] = filtered_col;
         }
-
-        // cerr << "Filtered DataFrame with " << filtered_df->row_data.size() - 1 << " rows." << endl;
 
         return *filtered_df;
     }
