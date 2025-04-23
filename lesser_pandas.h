@@ -152,6 +152,10 @@ public:
 
     // for filtering by mask array 
     vector<bool> operator==(const double& key) const {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
@@ -168,6 +172,10 @@ public:
     } 
 
     vector<bool> operator!=(const double& key) {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
@@ -184,6 +192,10 @@ public:
     }
 
     vector<bool> operator<(const double& key) {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
@@ -200,6 +212,10 @@ public:
     }
 
     vector<bool> operator>(const double& key) {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
@@ -216,6 +232,10 @@ public:
     }
 
     vector<bool> operator<=(const double& key) {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
@@ -232,6 +252,10 @@ public:
     }
 
     vector<bool> operator>=(const double& key) {
+        if (dtype == "string") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
