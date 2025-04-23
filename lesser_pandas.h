@@ -272,6 +272,10 @@ public:
     }
 
     vector<bool> operator==(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             mask[i] = (data[i] == key);
@@ -280,6 +284,10 @@ public:
     }
 
     vector<bool> operator!=(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             mask[i] = (data[i] != key);
@@ -288,6 +296,10 @@ public:
     }
 
     vector<bool> operator<(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             mask[i] = (data[i] < key);
@@ -296,6 +308,10 @@ public:
     }
 
     vector<bool> operator>(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             mask[i] = (data[i] > key);
@@ -304,6 +320,10 @@ public:
     }
 
     vector<bool> operator<=(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             mask[i] = (data[i] <= key);
@@ -312,6 +332,10 @@ public:
     }
 
     vector<bool> operator>=(const string& key) {
+        if (dtype == "float" || dtype == "int") {
+           throw runtime_error("Error: Invalid comparison");
+        }
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             mask[i] = (data[i] >= key);
