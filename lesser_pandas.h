@@ -149,15 +149,18 @@ public:
             }
         }
     }
+
     // for filtering by mask array 
     vector<bool> operator==(const int& key) const {
+        // TODO: We need to handle strings also, for example `df["name"] == "Ahmed"`
+
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
             try {
                 if (data[i].empty()) {
                     mask[i] = false; 
                 } else {
-                    mask[i] = (stoi(data[i]) == key); 
+                    mask[i] = (stod(data[i]) == key); 
                 }
             } catch (...) {
                 mask[i] = false; 
@@ -173,7 +176,7 @@ public:
                 if (data[i].empty()) {
                     mask[i] = false; 
                 } else {
-                    mask[i] = (stoi(data[i]) != key); 
+                    mask[i] = (stod(data[i]) != key); 
                 }
             } catch (...) {
                 mask[i] = false; 
@@ -181,6 +184,7 @@ public:
         }
         return mask;
     }
+
     vector<bool> operator<(const int& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
@@ -196,6 +200,7 @@ public:
         }
         return mask;
     }
+
     vector<bool> operator>(const int& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
@@ -203,7 +208,7 @@ public:
                 if (data[i].empty()) {
                     mask[i] = false; 
                 } else {
-                    mask[i] = (stoi(data[i]) > key); 
+                    mask[i] = (stod(data[i]) > key); 
                 }
             } catch (...) {
                 mask[i] = false; 
@@ -211,6 +216,7 @@ public:
         }
         return mask;
     }
+
     vector<bool> operator<=(const int& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
@@ -218,7 +224,7 @@ public:
                 if (data[i].empty()) {
                     mask[i] = false; 
                 } else {
-                    mask[i] = (stoi(data[i]) <= key); 
+                    mask[i] = (stod(data[i]) <= key); 
                 }
             } catch (...) {
                 mask[i] = false; 
@@ -226,6 +232,7 @@ public:
         }
         return mask;
     }
+
     vector<bool> operator>=(const int& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
@@ -241,6 +248,7 @@ public:
         }
         return mask;
     }
+
     vector<bool> operator==(const string& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
@@ -248,6 +256,7 @@ public:
         }
         return mask;
     }
+
     vector<bool> operator!=(const string& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
@@ -263,6 +272,7 @@ public:
         }
         return mask;
     }
+
     vector<bool> operator>(const string& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
@@ -270,6 +280,7 @@ public:
         }
         return mask;
     }
+
     vector<bool> operator<=(const string& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
@@ -277,6 +288,7 @@ public:
         }
         return mask;
     }
+
     vector<bool> operator>=(const string& key) {
         vector<bool> mask(data.size());
         for (size_t i = 0; i < data.size(); i++) {
@@ -685,6 +697,7 @@ public:
 
         return *filtered_df;
     }
+
     Column& operator[](const string& key) {
         auto it = col_data.find(key);
         if (it != col_data.end()) {
