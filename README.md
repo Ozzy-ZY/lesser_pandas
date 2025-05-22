@@ -63,7 +63,7 @@ int main() {
 - [ ] `df.describe()`: Descriptive statistics
 - [ ] `df.corr()`: Correlation matrix
 - [x] `df[df['Amount'] > 1000]`: Filter rows based on a condition
-- [ ] `df.sum()`: Returns the sum of all rows
+- [x] `df.sum()`: Returns the sum of all rows
 - [ ] `df["col"].sum()`
   - If the column contains non-numeric data (e.g., strings), `sum()` will concatenate them.
   - If the column has missing values (NaN), they will be ignored by default unless you specify `skipna=False`.

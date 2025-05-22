@@ -129,6 +129,30 @@ public:
 
         throw invalid_argument("Invalid type: Column::mean() expects `dtype` to be int or float");
     }
+
+    /**
+     * @brief Calculates the sum of the column data.
+     * 
+     * @return The sum value as a double
+     * @throws invalid_argument If the column dtype is not "int" or "float"
+     * @note Empty/missing values are excluded from the calculation
+     */
+    double sum() const {
+        if (dtype == "int" || dtype == "float") {
+            double sum = 0;
+            for(const string& element : data) {
+                if (element.length() == 0) {
+                    // missing element
+                    continue;
+                }
+                double num = stod(element);
+                sum += num;
+            }
+            return sum;
+        }
+
+        throw invalid_argument("Invalid type: Column::mean() expects `dtype` to be int or float");
+    }
     
     /**
      * @brief Returns a sorted copy of the column data in ascending order.
